@@ -26,7 +26,6 @@ class Vertex
                     vertex_ = vertex;
                     weight_ = weight;
                 }
-            private:
                 int vertex_ = 0;
                 double weight_ = 0.0;
         };
@@ -62,19 +61,45 @@ class Graph
         }
 
         /*
-            Adds destination vectors of the source vector to the adjacency list (or vector) along with its weight
+            Adds adjacent vertex(adjv) to current vector(v) list
         */
         void addEdge(const int &v, const int &adjv, const double &weight)
         {
             // Creates an object to hold the adjacent vertex
             Vertex::AdjVertex adj_Vertex(adjv, weight);
-            // Adds a destination vector to the source vectors adjList
+            // Adds a destination vertex to the source vertex list
             vertices[v]->adjList.push_back(adj_Vertex);
+            // If this were an undirected graph you would add the bottom instruction
+            // vertices[adj_Vertex]->adjList.push_back(v);
         }
 
         /*
-            
+            Checks if current(src) vertex is connected with given(dest) vertex
         */
+        bool isConnected(int src, int dest)
+        {
+            // Will be used when checking if current(src) vertex is connected to other(dest) vertex
+            bool adjacent = false;
+            // size of list
+            int size = vertices[src]->adjList.size();
+
+            // Loops through the list of vertices
+            for (int i = 0; i < size; i++)
+            {
+                // Checks dest is in adjList
+                if (vertices[src]->adjList[i].vertex_ = dest)
+                {
+                    // Adjacent vertex found
+                    adjacent = true;
+                    // Print statement as per assignment rules
+                    std::cout << src << " " << dest << ": connected " << vertices[src]->adjList[i].weight_ << std::endl;
+                    // will return true because adjacent vertex was found
+                    return adjacent;
+                }
+            }
+            // will return false because no adjacent vertex was found
+            return adjacent;
+        }
 
     private:
     vector<Vertex*> vertices;
