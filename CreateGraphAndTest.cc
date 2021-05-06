@@ -45,7 +45,7 @@ int testGraphDriver(int argc, char **argv)
   // Converts the string number to int and inserts into int v
   amountOfVInt >> v;
   // Prints amount of vertices in graph
-  std::cout << "There are " << v << " vertices in the graph" << std::endl;
+  // std::cout << "There are " << v << " vertices in the graph" << std::endl;
 
   // Initialize graph object
   Graph directedGraph(v);
@@ -86,7 +86,7 @@ int testGraphDriver(int argc, char **argv)
     }
   }
   graphTxt.close();
-  std::cout << "Graph was read" << std::endl;
+  // std::cout << "Graph was read" << std::endl;
 
   // The below variables will be used to check if they are connected to each other
   // currentVertex will be put through a function to check if destinationVertex is in its adjacency list
