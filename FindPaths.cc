@@ -88,12 +88,7 @@ int findPathDriver(int argc, char **argv)
   }
   graphTxt.close();
   // std::cout << "Graph was read" << std::endl;
-
-  std::cout << "Starting vertex: " << starting_vertex << std::endl;
-
   directedGraph.DijkstraAlgorithm(starting_vertex);
-  
-
   return 0;
 }
 

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <limits>
 #include "binary_heap.h"
 
 //This file is for your graph implementation.
@@ -10,26 +11,26 @@
 //Do not put anything outside those statements
 
 /*
+    Used for storing vector and its relative weight
+*/
+class AdjVertex
+{
+public:
+    AdjVertex(const int &vertex, const double &weight)
+    {
+        vertex_ = vertex;
+        weight_ = weight;
+    }
+    int vertex_;
+    double weight_;
+};
+
+/*
     Vertex Implementation that goes in graph (contains the list verticies that are connected to one another)
 */
 class Vertex
 {
 public:
-    /*
-    Will be used for reading in the vectors that are connect to the source vector
-    */
-    struct AdjVertex
-    {
-    public:
-        AdjVertex(const int &vertex, const double &weight)
-        {
-            vertex_ = vertex;
-            weight_ = weight;
-        }
-        int vertex_ = 0;
-        double weight_ = 0.0;
-    };
-
     Vertex(const int &v, const bool &known, const double &dist, Vertex *path)
     {
         v_ = v;
@@ -38,13 +39,13 @@ public:
         path_ = path;
     }
 
-    // List of all the adjacent vertices of the current vector
-    vector<AdjVertex> adjList;
     // Variables
-    int v_ = 0;
-    bool known_ = false;
-    double dist_ = 0.0;
+    int v_;
+    bool known_;
+    double dist_;
     Vertex* path_;
+    // List of all the adjacent vertices of the current vector 
+    vector<AdjVertex> adjList;
 };
 
 /*
@@ -60,7 +61,8 @@ public:
     {
         for (int i = 1; i < v + 1; i++)
         {
-            vertices[i] = new Vertex(i, false, 0.0, nullptr);
+            // Will create a list of vertex pointers 
+            vertices[i] = new Vertex(i, false, numeric_limits<int>::max(), nullptr);
         }
     }
 
@@ -70,7 +72,7 @@ public:
     void addEdge(const int &v, const int &adjv, const double &weight)
     {
         // Creates an object to hold the adjacent vertex
-        Vertex::AdjVertex adj_Vertex(adjv, weight);
+        AdjVertex adj_Vertex(adjv, weight);
         // Adds a destination vertex to the source vertex list
         vertices[v]->adjList.push_back(adj_Vertex);
         // If this were an undirected graph you would add the bottom instruction
@@ -133,7 +135,7 @@ public:
         //     }
         // }
         
-        vertices[starting_vertex]->dist_ = 0;
+        vertices[starting_vertex]->dist_ = 0.0;
         BinaryHeap<Vertex*> que;
         que.insert(vertices[starting_vertex]);
         
@@ -166,24 +168,20 @@ public:
 
         int size = vertices.size();
         // Print shortest path
-        std::cout << "HERE: Printing shortest path" << std::endl;
-        for (int i = 0; i < size; i++)
+        for (int i = 1; i < size; i++)
         {
-            int counter = 1;
-            std::cout << counter << std::endl;   
-            // std::cout << vertices[i]->v_ << ": ";
-            //double shortest_path = vertices[i]->dist_;
+            std::cout << vertices[i]->v_ << ": ";
+            double shortest_path = vertices[i]->dist_;
 
-            // printPath(vertices[i]);
-            // if(shortest_path > 0)
-            // {
-            //     std::cout << "(Cost: " << shortest_path << ")" << std::endl;
-            // }
-            // else
-            // {
-            //     std::cout << "not_possible" << std::endl;
-            // }
-            counter++;
+            printPath(vertices[i]);
+            if(shortest_path != numeric_limits<int>::max())
+            {
+                std::cout << "Cost: " << shortest_path << std::endl;
+            }
+            else
+            {
+                std::cout << "not_possible" << std::endl;
+            }
         }
     }
 
@@ -197,7 +195,6 @@ public:
         if (v->path_ != nullptr)
         {
             printPath(v->path_);
-            std::cout << " to ";
         }
         std::cout << v->v_ << " ";
     }
