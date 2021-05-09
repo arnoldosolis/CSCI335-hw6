@@ -1,0 +1,60 @@
+I.  All Parts Completed
+II. Bugs and Development
+    Question 1:
+    This part of the assignment required me implement(represent) a graph as an adjacency list. However, I thought using a matrix would be more intuitive considering the scope of the project. However due to some further investigation
+    I realized why we are being told to implement it as a list (it is more common in the industry as it accounts for sparseness in graphs). I actually emailed the professor about this and told me the short answer was no. So I looked
+    to the book to try and abstract the Adjacency list implementation. I found psuedo code in the book and it gave me a rough outline of what I needed to do. I did look in the boot for some guidance in implementing a linked list as
+    the last time I worked with a linked list was in 235 (for your reference I specifically looked at Chapter 3 for linked lists). It just took a little bit of abstraction and I came up with an answer. That being 3 classes, AdjacentVertex,
+    Vertex, and of course lastly Graph.
+
+    For the Graph class, I declared a vector of pointer vertices (vector<Vertex*> vertices). I then declared 1 public constructor graph that took in a constant integer v. The v represeneted the total amount of vertices that the graph would
+    have to take in. Within the graph constructor I set up a loop that starts inserting vertices at i = 1 (this matters as later I would forget when printing path).
+
+    I then made a function called addEdge that used the AdjVertex(aka Node) object and inserted them into adjacent list to represent the graph. Sorry about the wording. This was essentially what tied everything together and if I were to compare
+    this to a heap function my addEdge function is to my graph what the buildHeap function is to the heap. For my personal learning I did add an instruction if in the case I ever wanted to make it an undirected graph. It is commented out.
+
+    Note: For my AdjVertex and Vertex class I didnt have any private variables because I didn't think it was necessary as the only other class that would access it would be the Graph class. Whatsmore the variables would only be accessed within that
+    class. This was also what the textbook had so I thought it made the most sense. It also prevented any access or permission compile errors I might have had.
+
+    The second part of this question testing my graph by cross checking the adjacency list i implemented with the query files provided to me. So I created a member function in Graph called isConnected() that took 2 parameters src and dest. Src being
+    the origin vector and dest being the destination vector so the vector that is being checked for a connection. The code was fairly trivial as all I needed was a for loop and 2 conditonals.
+
+    In the CreateAndTestGraph.cc file all I really did was manage input and look back at my previous programs to remind myself how to get user parameter input, e.g., const string graph_filename(argv[1]). Though I did have to convert from string to int
+    and I did this by using the stringstream object and redirecting it into an int variable. Implementing the adjacent list was diffuclt but because I had resources available to me like the textbook it made it easier. Getting the textfile to be properly
+    inserted into the graph took a lot of effort due to the formatting of the file. I used a iterator variable to go through the vertices and so that each connected vertex and weight would be properly read into the adjacency list. At this point for some
+    reason I was getting scope errors so I debugged my code by just adding flags everywhere. I did not realize that I had declared the variable of the amount of vertices way after the time that it was ACTUALLY being inserted. Samething was happening with
+    my addEdge function but that was because the E was lower case and the actually function is capital E.
+
+    Lastly I had to read in the AdjacencyQueries textfile and that was the easiest part as all I needed was the ifstream object with 2 redirrect operators. Within the while statement I put my isConnected() function and boom it worked. Not much to think about.
+
+    Question 2:
+    This was the most difficult part of the project. As I still was not 100% sure how Dijkstra's Algorithm worked so what I did was reread the section that spoke about it. Thankfully psuedo code was included so that pretty much gave me half the answer as I did
+    not have to guess how to write the algorith.
+
+    Note: One thing I had to do whilst reading the psuedo code was add some variables to my Vertex class because of how the algorith worked. This included adding a boolean variable that would be set to true once it was visited.
+
+    Note:
+    I don't know why but it is just one part of my output that does not match with the final output. I think this comes down to it being different computers. I have not been able to connect to eniac so I cannot test this.
+
+    The rest of this task was just thinking and abstraction and I am writing this README after the day I finished so I apoligize if I left anything unclear. If you have quesetions please don't hesitate to reach out! Email: arnoldo.solis62@myhunter.cuny.edu
+III.Complete instructions of how to run your program(s)
+             There are 2 executeables associated with this assignment.
+             The first one is related to testing my implementation of the graph:
+             To compile just type in:
+                                     g++ -std=c++11 CreateGraphAndTest.cc -o CreateGraphAndTest
+             To run:
+                                     ./CreateGraphAndTest Graph1.txt AdjacencyQueries1.txt
+             The second one is related to testing my Dijkstra implementation:
+             To compile just type in:
+                                     g++ -std=c++11 FindPaths.cc -o FindPaths
+             To run:
+                                     ./FindPaths Graph2.txt 1
+Sources Used:
+Mark Allen Weiss, Data Structures and Algorithm Analysis in C++, 4th
+https://brilliant.org/wiki/dijkstras-short-path-finder/
+https://www.youtube.com/watch?v=StJCx7u0PIw
+https://www.educative.io/edpresso/directed-graphs-vs-undirected-graphs
+https://www.youtube.com/watch?v=by1zmpTxXIk
+https://www.youtube.com/watch?v=d6ZFqjH63vo
+https://www.cplusplus.com/reference/ios/fixed/
+https://en.cppreference.com/w/cpp/types/numeric_limits/max

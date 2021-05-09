@@ -106,7 +106,6 @@ int testGraphDriver(int argc, char **argv)
     exit(1);
   }
 
-  std::string line;
   while (adjQueriesTxt >> currentVertex >> destinationVertex)
   {
     // adjQueriesTxt >> currentVertex;
