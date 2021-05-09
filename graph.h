@@ -12,17 +12,21 @@
 
 /*
     Used for storing vector and its relative weight
+    This is essentially the Node class of the linked list 
 */
 class AdjVertex
 {
 public:
-    AdjVertex(const int &vertex, const double &weight)
+    // AdjVertex constructor 
+    AdjVertex(const int &vertex, const float &weight)
     {
         vertex_ = vertex;
         weight_ = weight;
     }
+    // number of vertex 
     int vertex_;
-    double weight_;
+    // weight 
+    float weight_;
 };
 
 /*
@@ -31,7 +35,8 @@ public:
 class Vertex
 {
 public:
-    Vertex(const int &v, const bool &known, const double &dist, Vertex *path)
+    // Vertex constructor 
+    Vertex(const int &v, const bool &known, const float &dist, Vertex *path)
     {
         v_ = v;
         known_ = known;
@@ -39,10 +44,15 @@ public:
         path_ = path;
     }
 
-    // Variables
+    // vector 
     int v_;
+    // By default will be set to false however
+    // when dijkstra algorithm runs it will be set 
+    // to true as it has been visited so it is known 
     bool known_;
-    double dist_;
+    // distance 
+    float dist_;
+    // Will be used in shortest path 
     Vertex* path_;
     // List of all the adjacent vertices of the current vector 
     vector<AdjVertex> adjList;
@@ -59,6 +69,7 @@ public:
     */
     Graph(const int &v) : vertices{v + (size_t)1}
     {
+        // Uses parameter to set size of vertices and inserts all vertices
         for (int i = 1; i < v + 1; i++)
         {
             // Will create a list of vertex pointers 
@@ -67,9 +78,9 @@ public:
     }
 
     /*
-            Adds adjacent vertex(adjv) to current vector(v) list
-        */
-    void addEdge(const int &v, const int &adjv, const double &weight)
+        Adds adjacent vertex(adjv) to current vector(v) list
+    */
+    void addEdge(const int &v, const int &adjv, const float &weight)
     {
         // Creates an object to hold the adjacent vertex
         AdjVertex adj_Vertex(adjv, weight);
@@ -80,15 +91,14 @@ public:
     }
 
     /*
-            Checks if current(src) vertex is connected with given(dest) vertex
-        */
+        Checks if current(src) vertex is connected with given(dest) vertex
+    */
     void isConnected(int src, int dest)
     {
         // Will be used when checking if current(src) vertex is connected to other(dest) vertex
         bool adjacent = false;
         // size of list
         int size = vertices[src]->adjList.size();
-
         // Loops through the list of vertices
         for (int i = 0; i < size; i++)
         {
@@ -99,14 +109,17 @@ public:
                 adjacent = true;
                 // Print statement as per assignment rules
                 std::cout << src << " " << dest << ": connected " << vertices[src]->adjList[i].weight_ << std::endl;
+                // This only tests if the src and dest are connected so once it finds that they are connected
+                // since only 1 src and 1 dest were put in the for loop should immediately be halted
                 break;
             }
         }
+        // If the destination vertex is not connected to source vertex
         if (adjacent == false)
         {
+            // Print not_connected 
             std::cout << src << " " << dest << ": not_connected " << std::endl;
         }
-        // will return false because no adjacent vertex was found
     }
 
     void DijkstraAlgorithm(const int &starting_vertex)
@@ -135,17 +148,24 @@ public:
         //     }
         // }
         
+        // Will use user inputted src vertex to look for shortest path to all other vertices 
         vertices[starting_vertex]->dist_ = 0.0;
+        // Initialzies BinaryHeap 
         BinaryHeap<Vertex*> que;
+        // Inserts vertex into queue
         que.insert(vertices[starting_vertex]);
         
+        // While the queue is not empty 
         while (!(que.isEmpty()))
         {
+            // Initialize a Vertex object pointer and set it equal to the min of -
             Vertex* v = que.findMin();
             que.deleteMin();
             v->known_ = true;
-
+            
+            // stores size of adjacent list in an int variable 
             int size = v->adjList.size();
+            // loops through adjacent list 
             for (int i = 0; i < size; i++)
             {
                 int a_vertex = v->adjList[i].vertex_;
@@ -155,7 +175,7 @@ public:
                 {
                     // Thought I name the variable cost it is a representation of 
                     // the weight of the edge
-                    double cost = v->adjList[i].weight_;
+                    float cost = v->adjList[i].weight_;
                     if (v->dist_ + cost < unknown_vertex->dist_)
                     {
                         unknown_vertex->dist_ = v->dist_ + cost;
@@ -170,13 +190,20 @@ public:
         // Print shortest path
         for (int i = 1; i < size; i++)
         {
+            // Prints vertex at i
             std::cout << vertices[i]->v_ << ": ";
-            double shortest_path = vertices[i]->dist_;
-
+            // stores the dist to 
+            float shortest_path = vertices[i]->dist_;
+            // prints the path (taken from textbook)
             printPath(vertices[i]);
+            // if the shortest path is not infinity then it can be reached 
             if(shortest_path != numeric_limits<int>::max())
             {
-                std::cout << "Cost: " << shortest_path << std::endl;
+                // sets decimal precicion to 1 so it will only print the tenths place 
+                std::cout.precision(1);
+                // write the floating point values in fixed point notation
+                std::cout << fixed;
+                std::cout << "cost: " << shortest_path << std::endl;
             }
             else
             {
